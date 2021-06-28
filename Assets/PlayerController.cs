@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -12,6 +14,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask ground;
     [SerializeField] private float speed = 5f;
     [SerializeField] private float jumpForce = 5f;
+    [SerializeField] public int coins = 0;
+    [SerializeField] private Text coinsText;
 
     private void Start()
     {
@@ -20,23 +24,42 @@ public class PlayerController : MonoBehaviour
         coll = GetComponent<Collider2D>();
 
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Collectable")
+        {
+            Destroy(collision.gameObject);
+            coins++;
+            coinsText.text = coins.ToString();
+
+        }
+    }
+
     // Update is called once per frame
     private void Update()
     {
-        
-        
+        Movement();
+
+        AnimationState();
+        anim.SetInteger("state", (int)state);
+    }
+
+    private void Movement()
+    {
         float hdirection = Input.GetAxis("Horizontal");
-        
+
         if (hdirection < 0)
         {
             rb.velocity = new Vector2(-speed, rb.velocity.y);
             transform.localScale = new Vector2(-1, 1);
-        }else if (hdirection > 0)
+        }
+        else if (hdirection > 0)
         {
             rb.velocity = new Vector2(speed, rb.velocity.y);
             transform.localScale = new Vector2(1, 1);
         }
-        
+
 
         if (Input.GetKey(KeyCode.W) && coll.IsTouchingLayers(ground))
         {
@@ -44,12 +67,9 @@ public class PlayerController : MonoBehaviour
             state = State.jumping;
 
         }
-
-        VelocityState();
-        anim.SetInteger("state", (int)state);
     }
 
-    private void VelocityState()
+    private void AnimationState()
     {
         if (state == State.jumping)
         {   
