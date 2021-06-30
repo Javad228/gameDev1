@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D rb;
-    private enum State {idle, running, jumping, falling, swordOut};
+    private enum State {idle, running, jumping, falling};
     private State state = State.idle;
     private Animator anim;
     private Collider2D coll;
@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour
 
         }
     }
+
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.tag == "Enemy")
@@ -75,13 +76,15 @@ public class PlayerController : MonoBehaviour
             state = State.jumping;
 
         }
-        
-        
     }
 
     private void AnimationState()
+<<<<<<< HEAD
     {   
         
+=======
+    {
+>>>>>>> parent of 1a30baf... bad
         if (state == State.jumping)
         {   
             if (rb.velocity.y < .1f)
