@@ -80,8 +80,12 @@ public class PlayerController : MonoBehaviour
 
     private void AnimationState()
 <<<<<<< HEAD
+<<<<<<< HEAD
     {   
         
+=======
+    {
+>>>>>>> parent of 1a30baf... bad
 =======
     {
 >>>>>>> parent of 1a30baf... bad
