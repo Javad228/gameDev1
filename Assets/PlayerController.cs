@@ -81,10 +81,7 @@ public class PlayerController : MonoBehaviour
 
     private void AnimationState()
     {   
-        if (Input.GetKey(KeyCode.F))
-        {
-            state = State.swordOut;
-        }
+        
         if (state == State.jumping)
         {   
             if (rb.velocity.y < .1f)
