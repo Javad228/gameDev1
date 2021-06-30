@@ -36,6 +36,15 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.tag == "Enemy")
+        {
+            Destroy(other.gameObject);
+        }
+        
+    }
+
     // Update is called once per frame
     private void Update()
     {
@@ -61,7 +70,7 @@ public class PlayerController : MonoBehaviour
         }
 
 
-        if (Input.GetKey(KeyCode.W) && coll.IsTouchingLayers(ground))
+        if (Input.GetKey(KeyCode.W))
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             state = State.jumping;
