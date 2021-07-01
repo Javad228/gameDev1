@@ -44,31 +44,40 @@ public class Enemy_Script : MonoBehaviour
         if (distToPlayer < agroRange && distToPlayer > 2)
         {
             //chase player
+            animator.SetBool("Walk", true);
             ChasePlayer();
         }
         else if (distToPlayer < 2)
         {
             //stop chasing
+            
             StopChasing();
+        }
+        else
+        {
+            animator.SetBool("Walk", false);
         }
     }
 
     void ChasePlayer()
     {
         if (transform.position.x < player.position.x)
-        {
+        {   
+            
             rb2d.velocity = new Vector2(moveSpeed, 0);
-            transform.localScale = new Vector2(-1, 1);
+            transform.localScale = new Vector2(1, 1);
         }
         else
         {
+            
             rb2d.velocity = new Vector2(-moveSpeed, 0);
-            transform.localScale = new Vector2(1, 1);
+            transform.localScale = new Vector2(-1, 1);
             
         }
     }
     void StopChasing()
-    {
+    {   
+        animator.SetBool("Walk", false);
         rb2d.velocity = new Vector2(0, 0);
     }
 }
