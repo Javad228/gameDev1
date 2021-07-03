@@ -23,6 +23,9 @@ TextureImporter:
   - first:
       213: -2388140271230072158
     second: Hit__6
+  - first:
+      213: 2451813753730860281
+    second: Hit__8
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -67,7 +70,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 64
+  spritePixelsToUnits: 50
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -129,10 +132,10 @@ TextureImporter:
         serializedVersion: 2
         x: 60
         y: 22
-        width: 191
+        width: 121
         height: 196
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.32908162, y: 0.11813287}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -150,10 +153,10 @@ TextureImporter:
         serializedVersion: 2
         x: 298
         y: 22
-        width: 191
+        width: 149
         height: 192
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.4140762, y: 0.11530677}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -171,10 +174,10 @@ TextureImporter:
         serializedVersion: 2
         x: 531
         y: 22
-        width: 191
+        width: 168
         height: 182
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.4941381, y: 0.12122485}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -192,10 +195,10 @@ TextureImporter:
         serializedVersion: 2
         x: 833
         y: 22
-        width: 191
+        width: 107
         height: 203
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.35273758, y: 0.11189543}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -213,10 +216,10 @@ TextureImporter:
         serializedVersion: 2
         x: 1089
         y: 22
-        width: 191
+        width: 91
         height: 201
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.41342264, y: 0.108033724}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -236,8 +239,8 @@ TextureImporter:
         y: 22
         width: 191
         height: 201
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.20094627, y: 0.11293329}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -253,12 +256,12 @@ TextureImporter:
       name: Hit__6
       rect:
         serializedVersion: 2
-        x: 1580
-        y: 25
-        width: 204
-        height: 201
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 1601
+        y: 22
+        width: 206
+        height: 203
+      alignment: 9
+      pivot: {x: 0.18925698, y: 0.112713136}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -266,6 +269,27 @@ TextureImporter:
       bones: []
       spriteID: 2aac683831f9bded0800000000000000
       internalID: -2388140271230072158
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hit__8
+      rect:
+        serializedVersion: 2
+        x: 1857
+        y: 20
+        width: 189
+        height: 180
+      alignment: 9
+      pivot: {x: 0.19730696, y: 0.13566233}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9f48b866e97960220800000000000000
+      internalID: 2451813753730860281
       vertices: []
       indices: 
       edges: []

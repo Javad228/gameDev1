@@ -135,7 +135,7 @@ public class PlayerController : MonoBehaviour
                 Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
                 foreach (Collider2D enemy in hitEnemies)
                 {
-                    Debug.Log("Hit " + enemy.name);
+                    print("Hit " + enemy.name);
                     enemy.GetComponent<Enemy_Script>().TakeDamage(attackDamage);
                 }
 
