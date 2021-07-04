@@ -14,7 +14,7 @@ public class Enemy_Script : MonoBehaviour
     private float FireRate = 2f;
     public float attackRate = 2f;
     private float nextAttackTime = 0f;
- 
+
     //The actual time the player will be able to fire.
     private float NextFire;
 
@@ -54,7 +54,7 @@ public class Enemy_Script : MonoBehaviour
             
             //print("walk = true");
             
-            if (!animator.GetBool("Attack")&&!animator.GetCurrentAnimatorStateInfo(0).IsName("hit"))
+            if (!animator.GetBool("Attack")&&!animator.GetCurrentAnimatorStateInfo(0).IsName("hit")&&player.GetComponent<PlayerController>().isDead == false)
             {
                 animator.SetBool("Walk", true);
                 ChasePlayer();

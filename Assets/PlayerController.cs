@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
 {
     private float speedNew;
     private bool moving;
+    public bool isDead = false;
     public float attackRate = 2f;
     private float nextAttackTime = 0f;
     public Transform attackPoint;
@@ -75,6 +76,11 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        if (anim.GetBool("Death")==true)
+        {
+            isDead = true;
+            this.enabled = false;
+        }
         if(Input.GetKey(KeyCode.A)|| Input.GetKey(KeyCode.D))
         {
             moving = true;
