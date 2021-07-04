@@ -26,6 +26,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public int coins = 0;
     [SerializeField] private Text coinsText;
     [SerializeField] private float hurtForce = 7f;
+    [SerializeField] private Transform lifeParent;
+    [SerializeField] private GameObject lifePrefab;
+   
+
+    
 
     private void Start()
     {
@@ -49,7 +54,9 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.tag == "Enemy")
-        {
+        {   
+            GetComponent<lifeCount>().LoseLife();
+            
             state = State.hurt;
             if (other.gameObject.transform.position.x > transform.position.x)
             {
