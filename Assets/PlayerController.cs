@@ -24,21 +24,45 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask ground;
     [SerializeField] private float speed = 5f;
     [SerializeField] private float jumpForce = 5f;
-    [SerializeField] public int coins = 0;
-    [SerializeField] private Text coinsText;
     [SerializeField] private float hurtForce = 7f;
     [SerializeField] private Transform lifeParent;
     [SerializeField] private GameObject lifePrefab;
+    public GameObject enemy;
+    private Animator animator;
+
+    
+    // Start is called before the first frame update
+
+
    
 
     
 
     private void Start()
     {
+        
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         coll = GetComponent<Collider2D>();
 
+
+    }
+    
+    public void LoseLife()
+    {
+        if (PlayerUI.perm.livesRemaining == 0)
+        {
+            return;
+        }
+        PlayerUI.perm.livesRemaining--;
+        PlayerUI.perm.lives[PlayerUI.perm.livesRemaining].enabled = false;
+        if (PlayerUI.perm.livesRemaining == 0)
+        {   
+            anim.SetBool("Death", true);
+            Debug.Log("dead");
+            //this.enabled = false;
+            
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -46,18 +70,18 @@ public class PlayerController : MonoBehaviour
         if (collision.tag == "Collectable")
         {
             Destroy(collision.gameObject);
-            coins++;
-            coinsText.text = coins.ToString();
+            PlayerUI.perm.coins++;
+            PlayerUI.perm.coinsText.text = PlayerUI.perm.coins.ToString();
 
         }
     }
-
+    
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.tag == "Enemy")
-        {   
-            GetComponent<lifeCount>().LoseLife();
-            
+        {
+            LoseLife();
+
             state = State.hurt;
             if (other.gameObject.transform.position.x > transform.position.x)
             {
@@ -69,6 +93,7 @@ public class PlayerController : MonoBehaviour
                 //enemy is on the left
                 rb.velocity = new Vector2(hurtForce, rb.velocity.y);
             }
+            
         }
         
     }
@@ -76,6 +101,10 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        // if (enemy.GetComponent<Enemy_Script>().enemyDead == false)
+        // {
+        //
+        // }
         if (anim.GetBool("Death")==true)
         {
             isDead = true;
