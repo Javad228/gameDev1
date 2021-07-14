@@ -22,6 +22,8 @@ public class Enemy_Script : MonoBehaviour
     private int randomSpot;
     private float waitTime;
     public float startWaitTime;
+    private bool close;
+
 
     //public bool enemyDead = false;
 
@@ -66,33 +68,55 @@ public class Enemy_Script : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {   
+    {
+        if ((Mathf.Abs(transform.position.x - moveSpots[0].position.x) >= 0.3f) &&
+            (Mathf.Abs(transform.position.x - moveSpots[4].position.x) >= 0.3f))
+        {
+            
+            
+            close = false;
+        }
+        else
+        {   
+            close = true;
+            print("walk set to false");
+            rb2d.velocity = new Vector2(0, 0);
+            animator.SetBool("Walk", false);
+            
+        }
         
         float distToPlayer = Vector2.Distance(transform.position, player.position);
-        print("distance: "+ distToPlayer);
+        //print("distance: "+ distToPlayer);
         
         if (distToPlayer < agroRange && distToPlayer > 3)
         {
             //chase player
             
             //print("walk = true");
-            
-            if (!animator.GetBool("Attack")&&!animator.GetCurrentAnimatorStateInfo(0).IsName("hit")&&player.GetComponent<PlayerController>().isDead == false)
+            print("big = " + ((Mathf.Abs(transform.position.x - moveSpots[0].position.x)>=0.3f)));
+            if ((Mathf.Abs(transform.position.x - moveSpots[0].position.x)>=0.3f)&&(Mathf.Abs(transform.position.x - moveSpots[4].position.x)>=0.3f))
             {
-                animator.SetBool("Walk", true);
-                ChasePlayer();
+                
+                if (!animator.GetBool("Attack")&&!animator.GetCurrentAnimatorStateInfo(0).IsName("hit")&&player.GetComponent<PlayerController>().isDead == false)
+                {
+                    animator.SetBool("Walk", true);
+                    ChasePlayer();
+                }
+                else
+                {
+                    animator.SetBool("Attack", false);
+                }
             }
             else
             {
-                animator.SetBool("Attack", false);
+
             }
             
         }
         else if (distToPlayer < 3)
         {
             //stop chasing
-            
-            
+
             if (Time.time >= nextAttackTime)
             {
                 animator.SetBool("Attack", true);
@@ -102,10 +126,20 @@ public class Enemy_Script : MonoBehaviour
             StopChasing();
         }
         else
-        {   
+        {
+            
+            if ((Mathf.Abs(transform.position.x - moveSpots[0].position.x) >= 0.3f) &&
+                (Mathf.Abs(transform.position.x - moveSpots[4].position.x) >= 0.3f))
+            {
+                animator.SetBool("Walk", true);
+            }
+            else
+            {
+
+            }
             
             animator.SetBool("Attack", false);
-            animator.SetBool("Walk", true);
+            
             transform.position = Vector2.MoveTowards(transform.position,moveSpots[randomSpot].position, (moveSpeed-2)*Time.deltaTime);
             if (transform.position.x < moveSpots[randomSpot].position.x+ 0.2f)
             {
@@ -134,28 +168,39 @@ public class Enemy_Script : MonoBehaviour
 
     void ChasePlayer()
     {
-        if (transform.position.x < player.position.x)
-        {   
+
+
+            if ((Mathf.Abs(transform.position.x - moveSpots[0].position.x)>=0.3f)&&(Mathf.Abs(transform.position.x - moveSpots[4].position.x)>=0.3f))
+            {
+                if (transform.position.x < player.position.x)
+                {
+                    rb2d.velocity = new Vector2(moveSpeed, rb2d.velocity.y);
+                    //transform.position = Vector2.MoveTowards(transform.position, player.transform.position, moveSpeed*Time.deltaTime);
+                    //print("moving with " + moveSpeed);
+                    transform.localScale = new Vector2(1, 1);
+                }
+                else
+                {
+                    //print("moving with " + -moveSpeed);
+                    rb2d.velocity =  new Vector2(-moveSpeed, rb2d.velocity.y);
+                    //transform.position = Vector2.MoveTowards(transform.position, player.transform.position, moveSpeed*Time.deltaTime);
+                    transform.localScale = new Vector2(-1, 1);
             
-            rb2d.velocity = new Vector2(moveSpeed, rb2d.velocity.y);
-            //transform.position = Vector2.MoveTowards(transform.position, player.transform.position, moveSpeed*Time.deltaTime);
-            print("moving with " + moveSpeed);
+                }
+            }
+            else
+            {   
             
-            transform.localScale = new Vector2(1, 1);
-        }
-        else
-        {
-            print("moving with " + -moveSpeed);
-            rb2d.velocity =  new Vector2(-moveSpeed, rb2d.velocity.y);
-            //transform.position = Vector2.MoveTowards(transform.position, player.transform.position, moveSpeed*Time.deltaTime);
-            transform.localScale = new Vector2(-1, 1);
-            
-        }
+                StopChasing();
+            } 
+        
+        
+        
     }
     void StopChasing()
-    {   
+    {       
+        print("Stopped");
         animator.SetBool("Walk", false);
-        //print("walk = false");
         rb2d.velocity = new Vector2(0, 0);
     }
 

@@ -7,10 +7,14 @@ public class sceneChanger : MonoBehaviour
 {
 
     [SerializeField] private string sceneName;
-
+    
     private void OnTriggerEnter2D(Collider2D other)
-    {
-        SceneManager.LoadScene(sceneName);
+    {   
+        if (other.gameObject.tag == "Untagged")
+        {
+            SceneManager.LoadScene(sceneName);
+        }
+        
     }
 
     // Start is called before the first frame update

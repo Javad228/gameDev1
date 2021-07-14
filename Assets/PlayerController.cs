@@ -178,7 +178,17 @@ public class PlayerController : MonoBehaviour
                 foreach (Collider2D enemy in hitEnemies)
                 {
                     print("Hit " + enemy.name);
-                    enemy.GetComponent<Enemy_Script>().TakeDamage(attackDamage);
+                    if (enemy.tag == "Barrel")
+                    {
+                        enemy.GetComponent<TakeDamage>().GetHit(attackDamage);
+                        
+                    }
+                    else
+                    {
+                        enemy.GetComponent<Enemy_Script>().TakeDamage(attackDamage);
+                    }
+                    
+                    
                 }
 
                 nextAttackTime = Time.time + 1f / attackRate;
