@@ -14,7 +14,7 @@ public class PlayerUI : MonoBehaviour
     void Start()
     {   
         DontDestroyOnLoad(gameObject);
-        
+        livesRemaining = lives.Length;
         if (!perm)
         {
             perm = this;

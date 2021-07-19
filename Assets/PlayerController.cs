@@ -6,14 +6,17 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+    //public GameObject UI;
     private float speedNew;
     private bool moving;
     public bool isDead = false;
     public float attackRate = 2f;
     private float nextAttackTime = 0f;
     public Transform attackPoint;
+    public Transform usePoint;
     public float attackRange = 0.5f;
     public LayerMask enemyLayers;
+    public LayerMask useLayers;
     public int attackDamage = 40;
     private Rigidbody2D rb;
     private int takingSwordOut;
@@ -29,6 +32,22 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject lifePrefab;
     public GameObject enemy;
     private Animator animator;
+    //static PlayerUI instance;
+ 
+    // void Awake() {
+    //     //Singleton method
+    //     if (instance == null) {
+    //         //First run, set the instance
+    //         instance = this;
+    //         DontDestroyOnLoad(gameObject);
+    //
+    //     } else if (instance != this) {
+    //         //Instance is not the same as the one we have, destroy old one, and reset to newest one
+    //         Destroy(instance.gameObject);
+    //         instance = this;
+    //         DontDestroyOnLoad(gameObject);
+    //     }
+    // }
 
     
     // Start is called before the first frame update
@@ -40,7 +59,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        
+        //Awake();
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         coll = GetComponent<Collider2D>();
@@ -195,6 +214,53 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            Collider2D[] useArea = Physics2D.OverlapCircleAll(usePoint.position, attackRange, useLayers);
+            float compare = Mathf.Abs(this.transform.position.x - useArea[0].gameObject.transform.position.x);
+            GameObject chest1 = useArea[0].gameObject;
+            foreach (Collider2D chest in useArea)
+            {
+                if (Mathf.Abs(this.transform.position.x - chest.gameObject.transform.position.x) <= compare)
+                {
+                    compare = Mathf.Abs(this.transform.position.x - chest.gameObject.transform.position.x);
+                    chest1 = chest.gameObject;
+                }
+                else
+                {
+                    continue;
+                }
+            }
+
+            
+            if (chest1.name == "ChestCommon")
+            {    
+                if (PlayerUI.perm.coins - 3 >= 0)
+                {
+                    PlayerUI.perm.coins = PlayerUI.perm.coins-3;
+                    PlayerUI.perm.coinsText.text = PlayerUI.perm.coins.ToString();
+                }
+                
+                
+            }else if (chest1.name == "ChestRare")
+            {
+                if (PlayerUI.perm.coins - 6 >= 0)
+                {
+                    PlayerUI.perm.coins=PlayerUI.perm.coins-6;
+                    PlayerUI.perm.coinsText.text = PlayerUI.perm.coins.ToString();
+                }
+                
+            }else if (chest1.name == "ChestLegend")
+            {
+                if (PlayerUI.perm.coins - 13 >= 0)
+                {
+                    PlayerUI.perm.coins=PlayerUI.perm.coins-13;
+                    PlayerUI.perm.coinsText.text = PlayerUI.perm.coins.ToString();
+                }
+                
+            }
+        }
+
         if (Input.GetKey(KeyCode.W) && coll.IsTouchingLayers(ground))
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
@@ -213,7 +279,15 @@ public class PlayerController : MonoBehaviour
         }
         
         Gizmos.DrawWireSphere(attackPoint.position,attackRange);
+        
+        if (usePoint == null)
+        {
+            return;
+        }
+        
+        Gizmos.DrawWireSphere(usePoint.position,attackRange);
     }
+    
 
     private void AnimationState()
     {
