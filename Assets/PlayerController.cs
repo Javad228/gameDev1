@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
     //public GameObject UI;
+    public bool opening;
     private float speedNew;
     private bool moving;
     public bool isDead = false;
@@ -118,11 +119,26 @@ public class PlayerController : MonoBehaviour
     }
 
     // Update is called once per frame
+    private void FixedUpdate()
+    {
+        if (state != State.hurt)
+        {
+            Movement();
+        }
+        
+        if (Input.GetKey(KeyCode.W) && coll.IsTouchingLayers(ground))
+        {
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            state = State.jumping;
+
+        }
+    }
+
     private void Update()
     {
         // if (enemy.GetComponent<Enemy_Script>().enemyDead == false)
         // {
-        //
+        // 
         // }
         if (anim.GetBool("Death")==true)
         {
@@ -135,10 +151,86 @@ public class PlayerController : MonoBehaviour
             
         } else{moving = false;}
 
-        if (state != State.hurt)
+        
+        if (Time.time >= nextAttackTime)
         {
-            Movement();
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                anim.SetTrigger("hit");
+                Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
+                foreach (Collider2D enemy in hitEnemies)
+                {
+                    print("Hit " + enemy.name);
+                    if (enemy.tag == "Barrel")
+                    {
+                        enemy.GetComponent<TakeDamage>().GetHit(attackDamage);
+                        
+                    }
+                    else
+                    {
+                        enemy.GetComponent<Enemy_Script>().TakeDamage(attackDamage);
+                    }
+                    
+                    
+                }
+
+                nextAttackTime = Time.time + 1f / attackRate;
+            }
         }
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            Collider2D[] useArea = Physics2D.OverlapCircleAll(usePoint.position, attackRange, useLayers);
+            float compare = Mathf.Abs(this.transform.position.x - useArea[0].gameObject.transform.position.x);
+            GameObject chest1 = useArea[0].gameObject;
+            foreach (Collider2D chest in useArea)
+            {
+                if (Mathf.Abs(this.transform.position.x - chest.gameObject.transform.position.x) <= compare)
+                {
+                    compare = Mathf.Abs(this.transform.position.x - chest.gameObject.transform.position.x);
+                    chest1 = chest.gameObject;
+                }
+                else
+                {
+                    continue;
+                }
+            }
+    
+            
+            if (chest1.name == "ChestCommon")
+            {    
+                if (PlayerUI.perm.coins - 3 >= 0)
+                {
+                    PlayerUI.perm.coins = PlayerUI.perm.coins-3;
+                    PlayerUI.perm.coinsText.text = PlayerUI.perm.coins.ToString();
+                }
+                
+                
+            }else if (chest1.name == "ChestRare")
+            {
+                if (PlayerUI.perm.coins - 6 >= 0)
+                {
+                    PlayerUI.perm.coins=PlayerUI.perm.coins-6;
+                    PlayerUI.perm.coinsText.text = PlayerUI.perm.coins.ToString();
+                }
+                
+            }else if (chest1.name == "ChestLegend")
+            {
+                if (PlayerUI.perm.coins - 13 >= 0)
+                {
+                    PlayerUI.perm.coins=PlayerUI.perm.coins-13;
+                    PlayerUI.perm.coinsText.text = PlayerUI.perm.coins.ToString();
+                }
+                
+            }
+            else
+            {
+                anim.SetTrigger("open");
+                opening = true;
+                this.enabled = false;
+            }
+        }
+
         
         
         AnimationState();
@@ -185,90 +277,7 @@ public class PlayerController : MonoBehaviour
                 transform.localScale = new Vector2(1, 1);
             }
         }
-        
-        
 
-        if (Time.time >= nextAttackTime)
-        {
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                anim.SetTrigger("hit");
-                Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
-                foreach (Collider2D enemy in hitEnemies)
-                {
-                    print("Hit " + enemy.name);
-                    if (enemy.tag == "Barrel")
-                    {
-                        enemy.GetComponent<TakeDamage>().GetHit(attackDamage);
-                        
-                    }
-                    else
-                    {
-                        enemy.GetComponent<Enemy_Script>().TakeDamage(attackDamage);
-                    }
-                    
-                    
-                }
-
-                nextAttackTime = Time.time + 1f / attackRate;
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            Collider2D[] useArea = Physics2D.OverlapCircleAll(usePoint.position, attackRange, useLayers);
-            float compare = Mathf.Abs(this.transform.position.x - useArea[0].gameObject.transform.position.x);
-            GameObject chest1 = useArea[0].gameObject;
-            foreach (Collider2D chest in useArea)
-            {
-                if (Mathf.Abs(this.transform.position.x - chest.gameObject.transform.position.x) <= compare)
-                {
-                    compare = Mathf.Abs(this.transform.position.x - chest.gameObject.transform.position.x);
-                    chest1 = chest.gameObject;
-                }
-                else
-                {
-                    continue;
-                }
-            }
-
-            
-            if (chest1.name == "ChestCommon")
-            {    
-                if (PlayerUI.perm.coins - 3 >= 0)
-                {
-                    PlayerUI.perm.coins = PlayerUI.perm.coins-3;
-                    PlayerUI.perm.coinsText.text = PlayerUI.perm.coins.ToString();
-                }
-                
-                
-            }else if (chest1.name == "ChestRare")
-            {
-                if (PlayerUI.perm.coins - 6 >= 0)
-                {
-                    PlayerUI.perm.coins=PlayerUI.perm.coins-6;
-                    PlayerUI.perm.coinsText.text = PlayerUI.perm.coins.ToString();
-                }
-                
-            }else if (chest1.name == "ChestLegend")
-            {
-                if (PlayerUI.perm.coins - 13 >= 0)
-                {
-                    PlayerUI.perm.coins=PlayerUI.perm.coins-13;
-                    PlayerUI.perm.coinsText.text = PlayerUI.perm.coins.ToString();
-                }
-                
-            }
-        }
-
-        if (Input.GetKey(KeyCode.W) && coll.IsTouchingLayers(ground))
-        {
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-            state = State.jumping;
-
-        }
-        
-        
     }
 
     private void OnDrawGizmosSelected()
