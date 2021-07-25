@@ -125,6 +125,11 @@ public class PlayerController : MonoBehaviour
         {
             Movement();
         }
+        if(Input.GetKey(KeyCode.A)|| Input.GetKey(KeyCode.D))
+        {
+            moving = true;
+            
+        } else{moving = false;}
         
         if (Input.GetKey(KeyCode.W) && coll.IsTouchingLayers(ground))
         {
@@ -132,6 +137,9 @@ public class PlayerController : MonoBehaviour
             state = State.jumping;
 
         }
+        
+        AnimationState();
+        anim.SetInteger("state", (int)state);
     }
 
     private void Update()
@@ -145,11 +153,7 @@ public class PlayerController : MonoBehaviour
             isDead = true;
             this.enabled = false;
         }
-        if(Input.GetKey(KeyCode.A)|| Input.GetKey(KeyCode.D))
-        {
-            moving = true;
-            
-        } else{moving = false;}
+        
 
         
         if (Time.time >= nextAttackTime)
@@ -195,7 +199,9 @@ public class PlayerController : MonoBehaviour
                     continue;
                 }
             }
-    
+            
+                
+            
             
             if (chest1.name == "ChestCommon")
             {    
@@ -223,18 +229,30 @@ public class PlayerController : MonoBehaviour
                 }
                 
             }
-            else
+            else if (chest1.name != "Sign")
             {
                 anim.SetTrigger("open");
                 opening = true;
                 this.enabled = false;
             }
+            else
+            {
+                if (FindObjectOfType<DialogueManager>().conversationStarted == true)
+                {
+                    FindObjectOfType<DialogueManager>().DisplayNextSentence();
+                }
+                else
+                {
+                    chest1.GetComponent<DialogueTrigger>().TriggerDialogue();
+                }
+                
+                
+            }
         }
 
         
         
-        AnimationState();
-        anim.SetInteger("state", (int)state);
+        
     }
 
     private void Movement()
