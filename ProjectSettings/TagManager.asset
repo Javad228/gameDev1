@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - Barrel
   - chest
+  - Moving_Platform
   layers:
   - Default
   - TransparentFX

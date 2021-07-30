@@ -29,13 +29,13 @@ public class SpawnCoins : MonoBehaviour
                 GameObject coin = Instantiate(Collectable, transform.position, Quaternion.identity);
                 if (a <100)
                 {
-                    coin.GetComponent<Rigidbody2D>().velocity = new Vector2(7, Random.Range(4,5));
+                    coin.GetComponent<Rigidbody2D>().velocity = new Vector2(1, Random.Range(4,5));
                     a = 100;
                 }
                 else
                 {
                     a = 0;
-                    coin.GetComponent<Rigidbody2D>().velocity = new Vector2(-7, Random.Range(4,5));
+                    coin.GetComponent<Rigidbody2D>().velocity = new Vector2(-1, Random.Range(4,5));
                 }
                 
                 

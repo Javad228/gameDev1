@@ -117,10 +117,27 @@ public class PlayerController : MonoBehaviour
         }
         
     }
-
+    private void OnCollisionStay2D(Collision2D other){
+             
+        if(other.gameObject.tag == "Moving_Platform"){
+            transform.parent = other.transform;
+            print("hey");
+ 
+        }
+    }
+    private void OnCollisionExit2D(Collision2D other)
+    {
+        if (other.transform.tag == "Moving_Platform")
+        {
+            transform.parent = null;
+        }
+    }
     // Update is called once per frame
     private void FixedUpdate()
     {
+        
+        
+        
         if (state != State.hurt)
         {
             Movement();
@@ -153,8 +170,8 @@ public class PlayerController : MonoBehaviour
             isDead = true;
             this.enabled = false;
         }
-        
 
+        
         
         if (Time.time >= nextAttackTime)
         {
@@ -179,8 +196,23 @@ public class PlayerController : MonoBehaviour
                 }
 
                 nextAttackTime = Time.time + 1f / attackRate;
+                
+                
             }
         }
+
+        if (GameObject.Find("DialogueManager") != null)
+        {
+            if (FindObjectOfType<DialogueManager>().animator.GetBool("isOpen"))
+            {
+                if (Mathf.Abs(this.transform.position.x - GameObject.Find("Sign").transform.position.x)>=4)
+                {
+                    FindObjectOfType<DialogueManager>().EndDialogue();
+                }
+            }
+        }
+        
+        
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
